@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "md2html"
+version = "0.1.0"
+description = "Markdown-to-standalone-HTML converter with themes, syntax highlighting, and a table of contents."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Portfolio Author" }]
+dependencies = [
+    "click>=8.0",
+    "markdown-it-py>=2.0",
+    "mdit-py-plugins>=0.3",
+    "pygments>=2.14",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "fastapi>=0.100",
+    "uvicorn>=0.20",
+]
+
+[project.scripts]
+md2html = "md2html.cli:main"
+
+[tool.setuptools]
+packages = ["md2html"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

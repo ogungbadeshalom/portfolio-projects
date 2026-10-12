@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Tasks — Task Scheduler{% endblock %}
+{% block content %}
+<h1>Tasks</h1>
+<table class="table">
+  <thead><tr><th>#</th><th>name</th><th>status</th><th>scheduled</th><th>cron</th><th>attempts</th><th>last error</th></tr></thead>
+  <tbody>
+    {% for t in tasks %}
+    <tr>
+      <td><a href="/tasks/{{ t.id }}">{{ t.id }}</a></td>
+      <td>{{ t.name }}</td>
+      <td><span class="badge {{ t.status }}">{{ t.status }}</span></td>
+      <td>{{ t.scheduled_at.strftime('%Y-%m-%d %H:%M') if t.scheduled_at else '—' }}</td>
+      <td class="mono">{{ t.cron or '—' }}</td>
+      <td>{{ t.attempts }}/{{ t.max_attempts }}</td>
+      <td class="mono muted">{{ t.last_error or '' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="empty">No tasks.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

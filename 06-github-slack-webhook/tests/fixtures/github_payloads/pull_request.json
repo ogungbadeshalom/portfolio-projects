@@ -1,0 +1,18 @@
+{
+  "action": "opened",
+  "number": 42,
+  "pull_request": {
+    "number": 42,
+    "title": "Add the new dashboard endpoint",
+    "html_url": "https://github.com/octocat/Hello-World/pull/42",
+    "merged": false,
+    "user": { "login": "octocat" },
+    "head": { "ref": "feature/tenants" },
+    "base": { "ref": "master" }
+  },
+  "repository": {
+    "full_name": "octocat/Hello-World",
+    "html_url": "https://github.com/octocat/Hello-World",
+    "name": "Hello-World"
+  }
+}

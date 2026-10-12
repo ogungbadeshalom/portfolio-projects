@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Task Scheduler{% endblock %}
+{% block content %}
+<h1>Task overview</h1>
+
+<section class="stats">
+  <div class="stat"><span class="n">{{ stats.total }}</span><span class="l">total</span></div>
+  <div class="stat"><span class="n pend">{{ stats.pending }}</span><span class="l">pending</span></div>
+  <div class="stat"><span class="n run">{{ stats.running }}</span><span class="l">running</span></div>
+  <div class="stat"><span class="n ok">{{ stats.done }}</span><span class="l">done</span></div>
+  <div class="stat"><span class="n warn">{{ stats.failed }}</span><span class="l">failed</span></div>
+  <div class="stat"><span class="n dead">{{ stats.dead }}</span><span class="l">dead (DLQ)</span></div>
+  <div class="stat"><span class="n">{{ workers_active }}</span><span class="l">workers active</span></div>
+</section>
+
+<section>
+  <h2>Workers</h2>
+  <table class="table">
+    <thead><tr><th>id</th><th>host</th><th>status</th><th>heartbeat</th><th>current task</th><th>done/failed</th></tr></thead>
+    <tbody>
+      {% for w in workers %}
+      <tr>
+        <td class="mono">{{ w.id }}</td>
+        <td>{{ w.hostname }}</td>
+        <td><span class="badge {{ w.status }}">{{ w.status }}</span></td>
+        <td>{{ w.last_heartbeat.strftime('%H:%M:%S') if w.last_heartbeat else '—' }}</td>
+        <td>{{ '#' ~ w.current_task_id if w.current_task_id else '—' }}</td>
+        <td>{{ w.tasks_completed }}/{{ w.tasks_failed }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="empty">No workers.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Recent tasks</h2>
+  <table class="table">
+    <thead><tr><th>#</th><th>name</th><th>status</th><th>cron</th><th>payload</th><th>attempts</th></tr></thead>
+    <tbody>
+      {% for t in tasks %}
+      <tr>
+        <td><a href="/tasks/{{ t.id }}">{{ t.id }}</a></td>
+        <td>{{ t.name }}</td>
+        <td><span class="badge {{ t.status }}">{{ t.status }}</span></td>
+        <td class="mono">{{ t.cron or '—' }}</td>
+        <td class="mono">{{ t.payload_json }}</td>
+        <td>{{ t.attempts }}/{{ t.max_attempts }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="empty">No tasks yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Webhook Events</title>
+  <style>
+    :root { --bg:#0f172a; --card:#1e293b; --line:#334155; --fg:#e2e8f0; --muted:#94a3b8; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, sans-serif; background:var(--bg); color:var(--fg); padding:2rem 1rem; }
+    h1 { font-size:1.4rem; margin:0 0 1rem; }
+    .muted { color:var(--muted); }
+    table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+    th, td { text-align:left; padding:.6rem .75rem; border-bottom:1px solid var(--line); }
+    th { font-size:.75rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+    tr:last-child td { border-bottom:none; }
+    .tag { display:inline-block; padding:.15rem .5rem; border-radius:999px; font-size:.72rem; font-weight:600; }
+    .tag.delivered { background:#14532d; color:#86efac; }
+    .tag.received { background:#1e3a8a; color:#93c5fd; }
+    .tag.failed   { background:#7f1d1d; color:#fca5a5; }
+    .mono { font-family: ui-monospace, "Cascadia Code", monospace; font-size:.82rem; }
+    .empty { color:var(--muted); padding:1rem; }
+  </style>
+</head>
+<body>
+  <h1>Recent webhook events</h1>
+  {% if events %}
+  <table>
+    <thead>
+      <tr><th>#</th><th>Event</th><th>Delivery ID</th><th>Status</th><th>Created (UTC)</th></tr>
+    </thead>
+    <tbody>
+      {% for e in events %}
+      <tr>
+        <td class="mono">{{ e.id }}</td>
+        <td><span class="tag received">{{ e.event }}</span></td>
+        <td class="mono muted">{{ e.delivery_id }}</td>
+        <td><span class="tag {{ e.status }}">{{ e.status }}</span></td>
+        <td class="mono muted">{{ e.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty">No events captured yet. Send a signed webhook to <span class="mono">/webhook/github</span>.</p>
+  {% endif %}
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pomodoro Timer — Manual Test Checklist</title>
+  <style>
+    :root {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: #171a21;
+      color: #e8ecf3;
+      line-height: 1.5;
+    }
+    body { max-width: 820px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { border-bottom: 2px solid #ef5b9c; padding-bottom: 0.5rem; }
+    details { background: #1f2430; border-radius: 10px; margin-top: 1rem; padding: 0.75rem 1rem; }
+    summary { font-weight: 600; cursor: pointer; color: #ef5b9c; }
+    li { margin: 0.4rem 0; }
+    input[type="checkbox"] { accent-color: #ef5b9c; transform: scale(1.2); margin-right: 0.5rem; }
+    .warn { color: #ffd37a; }
+    a { color: #7aa2ff; }
+  </style>
+</head>
+<body>
+  <h1>Pomodoro Timer — Manual Test Checklist</h1>
+  <p>
+    Open <a href="./index.html">index.html</a> in a new tab alongside this page and tick items
+    as you confirm them. Recommended: test in at least two browsers (e.g. Chrome + Firefox).
+  </p>
+
+  <details open>
+    <summary>Setup</summary>
+    <ol>
+      <li><label><input type="checkbox" /> App loads with no console errors.</label></li>
+      <li><label><input type="checkbox" /> Dark theme visible by default. Light toggle in the top-right switches themes.</label></li>
+      <li><label><input type="checkbox" /> Time shows <code>25:00</code>, cycle shows <code>Cycle 1 / 4</code>, mode = Work.</label></li>
+    </ol>
+  </details>
+
+  <details open>
+    <summary>Timing</summary>
+    <ol>
+      <li><label><input type="checkbox" /> Click <strong>Start</strong> — ring decreases smoothly and time counts down per second.</label></li>
+      <li><label><input type="checkbox" /> Click <strong>Pause</strong> (button text swaps to Start) — countdown stops, remains paused.</label></li>
+      <li><label><input type="checkbox" /> Click <strong>Start</strong> again — resumes from where it left off.</label></li>
+      <li><label><input type="checkbox" /> Click <strong>Reset</strong> — returns to full duration for current mode, state idle.</label></li>
+    </ol>
+  </details>
+
+  <details open>
+    <summary>Modes &amp; cycle</summary>
+    <ol>
+      <li><label><input type="checkbox" /> Switching modes changes the time to 25 / 5 / 15 and the ring accent color.</label></li>
+      <li><label><input type="checkbox" /> Arrow keys move focus between mode tabs and switch mode.</label></li>
+      <li><label><input type="checkbox" /> Completing a Work session advances the cycle (e.g. <code>1 / 4</code> → <code>2 / 4</code>) and switches to Short Break.</label></li>
+      <li><label><input type="checkbox" /> After the 4th Work session, the timer switches to Long Break and cycle resets to <code>1 / 4</code>.</label></li>
+      <li><label><input type="checkbox" /> Completing a break switches back to Work at the same cycle.</label></li>
+    </ol>
+  </details>
+
+  <details open>
+    <summary>Sound &amp; notification</summary>
+    <ol>
+      <li><label><input type="checkbox" /> A two-note bell plays when a session reaches 0 (if sound is enabled).</label></li>
+      <li><label><input type="checkbox" /> Browser asks for Notification permission on first click; a notification appears on completion if enabled.</label></li>
+      <li><label><input type="checkbox" /> Turning sound off in Settings silences the bell.</label></li>
+    </ol>
+  </details>
+
+  <details open>
+    <summary>Stats &amp; persistence</summary>
+    <ol>
+      <li><label><input type="checkbox" /> Completing a Work session increments <strong>Sessions</strong> and <strong>Focus min</strong> by ~the work duration.</label></li>
+      <li><label><input type="checkbox" /> Refresh the page — stats persist (localStorage).</label></li>
+      <li><label><input type="checkbox" /> <span class="warn">Private/incognito mode:</span> app still runs without errors even if storage is blocked.</label></li>
+    </ol>
+  </details>
+
+  <details open>
+    <summary>Settings</summary>
+    <ol>
+      <li><label><input type="checkbox" /> Settings opens a modal; custom durations (e.g. Work 30, Short 10) save and apply.</label></li>
+      <li><label><input type="checkbox" /> Durations shown on the mode tabs update to match saved settings.</label></li>
+      <li><label><input type="checkbox" /> Settings persist across refresh.</label></li>
+      <li><label><input type="checkbox" /> Esc / backdrop / Cancel close the modal.</label></li>
+    </ol>
+  </details>
+
+  <details open>
+    <summary>Keyboard</summary>
+    <ol>
+      <li><label><input type="checkbox" /> <kbd>Space</kbd> toggles start/pause (not while typing in a field).</label></li>
+      <li><label><input type="checkbox" /> <kbd>R</kbd> resets.</label></li>
+      <li><label><input type="checkbox" /> <kbd>M</kbd> cycles modes.</label></li>
+      <li><label><input type="checkbox" /> Shortcuts work without any button being focused.</label></li>
+    </ol>
+  </details>
+
+  <details open>
+    <summary>Accessibility &amp; responsive</summary>
+    <ol>
+      <li><label><input type="checkbox" /> Visible focus ring appears when tabbing between controls.</label></li>
+      <li><label><input type="checkbox" /> Screen reader (or focus inspection) hears state names: Ready / Running / Paused, plus completion messages.</label></li>
+      <li><label><input type="checkbox" /> Layout stays usable at 320px wide and 1920px wide.</label></li>
+      <li><label><input type="checkbox" /> With OS reduced-motion on, animations are minimized.</label></li>
+    </ol>
+  </details>
+</body>
+</html>

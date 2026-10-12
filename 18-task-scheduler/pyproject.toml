@@ -1,0 +1,26 @@
+[project]
+name = "distributed-task-scheduler"
+version = "1.0.0"
+description = "Distributed task scheduler: in-memory+sqlite queue, workers, retry, DLQ, metrics"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "jinja2",
+    "sqlalchemy",
+    "click",
+    "prometheus_client",
+]
+
+[project.scripts]
+scheduler = "scheduler.cli:cli"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["scheduler*"]
+
+[tool.setuptools.package-data]
+scheduler = ["templates/*.html", "static/*.css"]

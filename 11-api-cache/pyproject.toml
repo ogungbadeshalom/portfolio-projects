@@ -1,0 +1,24 @@
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[project]
+name = "apicache"
+version = "0.1.0"
+description = "Generic JSON API → SQLite cache with TTL, tags, ETag, and stats."
+requires-python = ">=3.11"
+dependencies = ["aiosqlite", "httpx", "click", "pydantic"]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-asyncio"]
+
+[project.scripts]
+apicache = "apicache.cli:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["apicache*"]

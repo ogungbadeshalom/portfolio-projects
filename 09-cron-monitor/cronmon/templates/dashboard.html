@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Cron Monitor{% endblock %}
+{% block content %}
+
+<h1>Job overview</h1>
+
+<section class="stats" data-test="stats">
+  <div class="stat"><span class="n">{{ stats.total_jobs }}</span><span class="l">jobs</span></div>
+  <div class="stat"><span class="n ok">{{ stats.healthy }}</span><span class="l">healthy</span></div>
+  <div class="stat"><span class="n run">{{ stats.running }}</span><span class="l">running</span></div>
+  <div class="stat"><span class="n bad">{{ stats.failing }}</span><span class="l">failing</span></div>
+  <div class="stat"><span class="n">{{ stats.total_runs_24h }}</span><span class="l">runs / 24h</span></div>
+  <div class="stat"><span class="n warn{% if stats.active_alerts %} bad{% endif %}">{{ stats.active_alerts }}</span><span class="l">active alerts</span></div>
+</section>
+
+<section data-test="jobs" hx-get="/" hx-trigger="every 15s" hx-swap="innerHTML" hx-select="#jobtable">
+  <table id="jobtable" class="jobtable">
+    <thead>
+      <tr><th>Job</th><th>Cron</th><th>Status</th><th>Last run</th><th>Duration</th><th>Uptime 7d</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for j in jobs %}
+      <tr data-test="job-row" data-job="{{ j.name }}">
+        <td><a href="/jobs/{{ j.id }}">{{ j.name }}</a></td>
+        <td class="mono">{{ j.cron or 'manual' }}</td>
+        <td><span class="badge {{ j.status }}" data-test="badge">{{ j.status }}</span></td>
+        <td>{{ j.last_run_at.strftime('%Y-%m-%d %H:%M') if j.last_run_at else '—' }}</td>
+        <td>{{ '%ds'|format(j.last_run_duration) if j.last_run_duration else '—' }}</td>
+        <td>{{ '%.1f%%'|format(j.uptime_7d) if j.uptime_7d is not none else '—' }}</td>
+        <td><button class="mini" hx-post="/api/jobs/{{ j.id }}/trigger" hx-target="closest tr" hx-swap="outerHTML">trigger</button></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" class="empty">No jobs registered yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="alerts" data-test="alerts">
+  <h2>Alert history</h2>
+  {% if alerts %}
+  <ul class="alertlist">
+    {% for a in alerts %}
+    <li class="alert {{ a.type }}">
+      <span class="badge">{{ a.type }}</span>
+      <span>{{ a.message }}</span>
+      <span class="when">{{ a.sent_at.strftime('%Y-%m-%d %H:%M') }}</span>
+      {% if not a.acknowledged %}
+      <button class="mini" hx-post="/api/alerts/{{ a.id }}/ack" hx-target="closest li" hx-swap="outerHTML">ack</button>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="empty">No alerts — all quiet.</p>
+  {% endif %}
+</section>
+
+{% endblock %}

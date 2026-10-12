@@ -1,0 +1,24 @@
+{
+  "ref": "refs/heads/feature/new-feature",
+  "before": "8d9f2eb2d8d0f1a2b3c4d5e6f7a8b9c0d1e2f3a4",
+  "after": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+  "repository": {
+    "full_name": "octocat/Hello-World",
+    "html_url": "https://github.com/octocat/Hello-World",
+    "name": "Hello-World"
+  },
+  "pusher": { "name": "octocat", "email": "octocat@github.com" },
+  "compare": "https://github.com/octocat/Hello-World/compare/8d9f2eb2...a1b2c3d4",
+  "commits": [
+    {
+      "id": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+      "message": "Add great new feature\n\nLonger body is truncated.",
+      "timestamp": "2024-01-02T10:30:00Z",
+      "author": { "name": "Mona Lisa", "email": "mona@example.com", "username": "octocat" }
+    }
+  ],
+  "head_commit": { "id": null },
+  "added": ["lib/new_file.rb"],
+  "removed": [],
+  "modified": ["lib/old_file.rb"]
+}

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login — Real-Time Chat</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <h1>Real-Time Chat</h1>
+      <div id="error" class="error"></div>
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" autocomplete="username" placeholder="alice" />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" />
+      </div>
+      <button id="login" style="width:100%;margin-bottom:10px;">Log in</button>
+      <button id="register" class="btn-secondary" style="width:100%;">Create account</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      var errorEl = document.getElementById("error");
+
+      function showError(msg) {
+        errorEl.textContent = msg;
+        errorEl.classList.add("show");
+      }
+
+      function hideError() {
+        errorEl.classList.remove("show");
+      }
+
+      function credentials() {
+        return {
+          username: document.getElementById("username").value.trim(),
+          password: document.getElementById("password").value
+        };
+      }
+
+      function proceed(access_token, username) {
+        localStorage.setItem("chat_token", access_token);
+        localStorage.setItem("chat_username", username);
+        window.location.href = "/rooms";
+      }
+
+      function submit(path) {
+        hideError();
+        var body = credentials();
+        if (!body.username || !body.password) {
+          showError("Username and password are required.");
+          return;
+        }
+        fetch(path, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        })
+          .then(function (r) {
+            if (!r.ok) {
+              return r.json().then(function (j) {
+                throw new Error(j.detail || "Request failed");
+              });
+            }
+            return r.json();
+          })
+          .then(function (data) {
+            proceed(data.access_token, data.username);
+          })
+          .catch(function (err) {
+            showError(err.message);
+          });
+      }
+
+      document.getElementById("login").addEventListener("click", function () {
+        submit("/api/auth/login");
+      });
+      document.getElementById("register").addEventListener("click", function () {
+        submit("/api/auth/register");
+      });
+      document
+        .getElementById("password")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") submit("/api/auth/login");
+        });
+    })();
+  </script>
+</body>
+</html>

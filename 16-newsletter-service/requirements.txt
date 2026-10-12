@@ -1,0 +1,19 @@
+# Core web framework and async support
+fastapi>=0.100
+uvicorn[standard]>=0.23
+SQLAlchemy>=2.0
+Jinja2>=3.1
+pydantic>=2.0
+python-multipart>=0.0.6   # form parsing for admin UI + subscribe
+
+# CLI
+click>=8.1
+
+# Async email sending. Optional at runtime: if NOT installable
+# (e.g. offline, old pip), smtplib (stdlib) or the FileSender dev
+# backend are used instead -- see newsletter/sender.py.
+aiosmtplib>=2.0
+
+# Tests
+pytest>=7.0
+httpx>=0.24

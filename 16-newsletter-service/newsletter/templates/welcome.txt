@@ -1,0 +1,11 @@
+Almost there, {{ name }}!
+
+Thanks for subscribing to {{ company }}. To finish your sign-up (double
+opt-in), please confirm by opening this link:
+
+    {{ confirm_url }}
+
+If you didn't request this, you can safely ignore this email.
+
+---
+{{ company }}

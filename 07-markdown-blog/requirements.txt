@@ -1,0 +1,21 @@
+# markdown-blog dependencies
+#
+# The blog generator is deliberately self-contained: `blog build` works on a
+# stock CPython 3.10 with **no** third-party packages installed.  The entries
+# below are optional quality upgrades and are used automatically whenever they
+# are importable.  Install them with:
+#
+#     python -m pip install -r requirements.txt
+#
+# or just the "full" experience via pyproject.toml:
+#
+#     python -m pip install ".[full]"
+
+markdown-it-py>=2.0   # preferred Markdown parser
+Jinja2>=3.0           # preferred template engine (with autoescape)
+Pygments>=2.10        # syntax highlighting for code blocks
+Pillow>=9.0           # Open Graph image generation
+click>=8.0            # CLI framework
+
+# Optional, only used by the test-suite
+pytest>=7.0

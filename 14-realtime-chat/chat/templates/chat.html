@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chat — Real-Time Chat</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body data-room-id="{{ room_id }}">
+  <div class="chat-layout">
+    <aside class="sidebar">
+      <h3>Online</h3>
+      <div class="online-list" id="online-list"></div>
+      <div class="meta">
+        <span id="me"></span>
+        <a id="back-link" href="/rooms"></a>
+        <a id="logout" href="#" style="color:var(--danger);" onclick="localStorage.clear();location.href='/';return false;">Log out</a>
+      </div>
+    </aside>
+    <main class="chat-main">
+      <header class="chat-header">Room #{{ room_id }}</header>
+      <div class="feed" id="messages"></div>
+      <div class="typing-indicator" id="typing"></div>
+      <div class="composer">
+        <input
+          id="msg-input"
+          maxlength="1000"
+          placeholder="Type a message…"
+          autocomplete="off"
+        />
+        <button id="send">Send</button>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById("me").textContent =
+      "Signed in as " + (localStorage.getItem("chat_username") || "?");
+  </script>
+  <script src="/static/chat.js"></script>
+</body>
+</html>

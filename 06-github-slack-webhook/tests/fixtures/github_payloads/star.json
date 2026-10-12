@@ -1,0 +1,10 @@
+{
+  "action": "starred",
+  "sender": { "login": "newfan" },
+  "repository": {
+    "full_name": "octocat/Hello-World",
+    "html_url": "https://github.com/octocat/Hello-World",
+    "name": "Hello-World",
+    "stargazers_count": 512
+  }
+}

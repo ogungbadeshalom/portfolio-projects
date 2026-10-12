@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A minimal, focus-friendly Pomodoro timer for work sessions and breaks." />
+  <title>Pomodoro Timer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Theme toggle -->
+  <header class="topbar">
+    <h1 class="sr-only">Pomodoro Timer</h1>
+    <button
+      id="theme-toggle"
+      class="icon-button"
+      type="button"
+      aria-pressed="false"
+      aria-label="Switch to light theme"
+      title="Toggle light / dark theme"
+    >
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+        <path id="theme-sun" d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Mode switcher -->
+  <nav class="mode-tabs" role="tablist" aria-label="Timer mode">
+    <button class="mode-tab is-active" data-mode="work" role="tab" aria-selected="true">
+      Work <span class="mode-duration">25</span>
+    </button>
+    <button class="mode-tab" data-mode="short" role="tab" aria-selected="false" tabindex="-1">
+      Short Break <span class="mode-duration">5</span>
+    </button>
+    <button class="mode-tab" data-mode="long" role="tab" aria-selected="false" tabindex="-1">
+      Long Break <span class="mode-duration">15</span>
+    </button>
+  </nav>
+
+  <!-- Timer display -->
+  <main class="timer-stage">
+    <div class="timer-ring-wrap">
+      <svg
+        class="timer-ring"
+        viewBox="0 0 260 260"
+        role="img"
+        aria-label="Timer countdown ring"
+        aria-hidden="true"
+      >
+        <circle class="ring-track" cx="130" cy="130" r="120" fill="none" />
+        <circle
+          class="ring-progress"
+          id="ring-progress"
+          cx="130"
+          cy="130"
+          r="120"
+          fill="none"
+        />
+      </svg>
+      <div class="timer-face" aria-live="polite" aria-atomic="true">
+        <time id="time-display" datetime="PT25M">25:00</time>
+        <p id="cycle-display" class="cycle">Cycle 1 / 4</p>
+        <p id="state-text" class="state-text" aria-hidden="true">Ready</p>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button id="start-pause" class="btn btn-primary" type="button">Start</button>
+      <button id="reset" class="btn" type="button">Reset</button>
+      <button id="settings" class="btn" type="button">Settings</button>
+    </div>
+
+    <!-- Stats -->
+    <section class="stats" aria-label="Today's statistics">
+      <div class="stat">
+        <span id="stat-sessions" class="stat-value">0</span>
+        <span class="stat-label">Sessions</span>
+      </div>
+      <div class="stat">
+        <span id="stat-minutes" class="stat-value">0</span>
+        <span class="stat-label">Focus min</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Settings modal -->
+  <div
+    id="settings-modal"
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="settings-title"
+    hidden
+  >
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-panel" role="document">
+      <div class="modal-header">
+        <h2 id="settings-title">Settings</h2>
+        <button id="close-settings" class="icon-button" type="button" aria-label="Close settings">
+          &times;
+        </button>
+      </div>
+
+      <form id="settings-form" novalidate>
+        <div class="field">
+          <label for="dur-work">Work duration (minutes)</label>
+          <input id="dur-work" name="work" type="number" min="1" max="120" step="1" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label for="dur-short">Short break (minutes)</label>
+          <input id="dur-short" name="short" type="number" min="1" max="60" step="1" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label for="dur-long">Long break (minutes)</label>
+          <input id="dur-long" name="long" type="number" min="1" max="120" step="1" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label for="sound-toggle">
+            <input id="sound-toggle" type="checkbox" />
+            <span>Play sound on complete</span>
+          </label>
+        </div>
+        <div class="field">
+          <label for="notify-toggle">
+            <input id="notify-toggle" type="checkbox" />
+            <span>Show browser notification</span>
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button id="save-settings" class="btn btn-primary" type="submit">Save</button>
+          <button id="cancel-settings" class="btn" type="button" data-close-modal>Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <p class="hint" id="hint">Space to start/pause &middot; R to reset &middot; M to switch mode</p>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

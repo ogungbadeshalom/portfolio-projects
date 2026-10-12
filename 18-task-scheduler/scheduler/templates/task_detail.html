@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Task #{{ task.id }} — Scheduler{% endblock %}
+{% block content %}
+<p><a href="/tasks">&larr; all tasks</a></p>
+<h1 data-test="task-title">#{{ task.id }} — {{ task.name }}</h1>
+<p class="mono">{{ task.payload_json }}</p>
+<div class="meta">
+  <span>status: <b>{{ task.status }}</b></span>
+  <span>attempts: <b>{{ task.attempts }}/{{ task.max_attempts }}</b></span>
+  <span>scheduled: <b>{{ task.scheduled_at or '—' }}</b></span>
+  <span>cron: <b class="mono">{{ task.cron or '—' }}</b></span>
+</div>
+
+<h2>Run history</h2>
+<table class="table" data-test="runs">
+  <thead><tr><th>run</th><th>worker</th><th>started</th><th>ended</th><th>duration</th><th>status</th><th>error</th></tr></thead>
+  <tbody>
+    {% for r in runs %}
+    <tr>
+      <td>#{{ r.id }}</td>
+      <td class="mono">{{ r.worker_id or '—' }}</td>
+      <td>{{ r.started_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+      <td>{{ r.ended_at.strftime('%Y-%m-%d %H:%M:%S') if r.ended_at else '—' }}</td>
+      <td>{{ '%.1fs'|format(r.duration_seconds) if r.duration_seconds is not none else '—' }}</td>
+      <td><span class="badge {{ r.status }}">{{ r.status }}</span></td>
+      <td class="mono muted">{{ r.error or '' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="empty">No executions yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

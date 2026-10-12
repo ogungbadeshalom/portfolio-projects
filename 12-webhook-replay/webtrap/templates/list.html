@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Captured requests{% endblock %}
+{% block content %}
+<h1>Captured requests <span class="muted">({{ total }})</span></h1>
+
+<div class="card">
+  <h2>Your trap URL</h2>
+  <p class="muted">Send any webhook here — every method and body is captured.</p>
+  <code class="clip">http://&lt;host&gt;:8085/incoming/<span id="tok">token</span></code>
+  <button class="btn" id="new-trap">Generate new trap URL</button>
+  <button class="btn subtle" id="copy-trap">Copy</button>
+  <span id="trap-msg" class="muted"></span>
+</div>
+
+<h2>Recent</h2>
+{% if rows %}
+<table>
+  <thead>
+    <tr><th>#</th><th>Method</th><th>Token</th><th>Path</th><th>Source</th><th>Received (UTC)</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for r in rows %}
+    <tr>
+      <td class="mono">{{ r.id }}</td>
+      <td><span class="method">{{ r.method }}</span></td>
+      <td class="mono muted">{{ r.token }}</td>
+      <td class="mono">{{ r.path }}</td>
+      <td class="mono muted">{{ r.source_ip or "&ndash;" }}</td>
+      <td class="mono muted">{{ r.received_at.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+      <td><a class="btn small" href="/request/{{ r.id }}">inspect</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No requests captured yet.</p>
+{% endif %}
+<script>
+const tok = document.getElementById('tok');
+const msg = document.getElementById('trap-msg');
+document.getElementById('new-trap').addEventListener('click', async () => {
+  const res = await fetch('/api/traps', {method:'POST', headers:{'Content-Type':'application/json'}, body:'{}'});
+  const data = await res.json();
+  if (data.token) { tok.textContent = data.token; msg.textContent = 'fresh trap ready'; }
+});
+document.getElementById('copy-trap').addEventListener('click', () => {
+  navigator.clipboard?.writeText('http://<host>:8085/incoming/' + tok.textContent);
+  msg.textContent = 'copied';
+});
+</script>
+{% endblock %}

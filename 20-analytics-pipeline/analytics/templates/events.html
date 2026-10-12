@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Events · Analytics{% endblock %}
+{% block content %}
+<h1>Raw Events</h1>
+<form class="filters" method="get" action="/events">
+  <input type="text" name="event" placeholder="event name" value="{{ event or '' }}">
+  <input type="text" name="user" placeholder="user_id" value="{{ user or '' }}">
+  <button type="submit">Filter</button>
+</form>
+<table class="events">
+  <thead>
+    <tr><th>ts</th><th>event</th><th>user_id</th><th>url</th><th>ip_anon</th></tr>
+  </thead>
+  <tbody>
+    {% for e in events %}
+    <tr>
+      <td class="mono">{{ e.ts_iso }}</td>
+      <td>{{ e.event_name }}</td>
+      <td>{{ e.user_id }}</td>
+      <td class="mono">{{ e.url or '' }}</td>
+      <td class="mono">{{ e.ip_anon or '' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="muted">No events yet. Send some via <code>/api/track</code>.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

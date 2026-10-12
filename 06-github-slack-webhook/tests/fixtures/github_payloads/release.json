@@ -1,0 +1,15 @@
+{
+  "action": "published",
+  "release": {
+    "tag_name": "v1.8.0",
+    "name": "v1.8.0",
+    "html_url": "https://github.com/octocat/Hello-World/releases/tag/v1.8.0",
+    "body": "Highlights:\n- Faster startup\n- Bug fixes",
+    "author": { "login": "octocat" }
+  },
+  "repository": {
+    "full_name": "octocat/Hello-World",
+    "html_url": "https://github.com/octocat/Hello-World",
+    "name": "Hello-World"
+  }
+}

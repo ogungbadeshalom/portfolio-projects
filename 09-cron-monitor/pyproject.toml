@@ -1,0 +1,28 @@
+[project]
+name = "cronmon"
+version = "0.1.0"
+description = "Cron Monitoring Dashboard - watchdog service + dashboard"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "jinja2",
+    "sqlalchemy",
+    "apscheduler",
+    "click",
+    "httpx",
+]
+
+[project.scripts]
+watchdog = "cronmon.cli:cli"
+cronmon = "cronmon.cli:cli"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["cronmon*"]
+
+[tool.setuptools.package-data]
+cronmon = ["templates/*.html", "static/*", "static/*.css", "static/*.js"]

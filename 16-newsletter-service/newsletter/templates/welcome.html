@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Confirm your subscription</title></head>
+<body style="font-family: Arial, sans-serif; max-width: 560px; margin: 32px auto; color: #222;">
+  <h1 style="color: #4f6ef7;">Almost there, {{ name }}</h1>
+  <p>Thanks for subscribing to <strong>{{ company }}</strong>. To finish the sign-up (double opt-in) please click the button below.</p>
+  <p style="margin: 28px 0;">
+    <a href="{{ confirm_url }}" style="display:inline-block;background:#4f6ef7;color:#fff;text-decoration:none;padding:12px 22px;border-radius:6px;">Confirm subscription</a>
+  </p>
+  <p>If the button doesn't work, copy and paste this link into your browser:</p>
+  <p><a href="{{ confirm_url }}">{{ confirm_url }}</a></p>
+  <hr style="margin-top:32px;border:none;border-top:1px solid #eee;">
+  <p style="color:#888;font-size:13px;">You're receiving this because someone requested a subscription to {{ company }}. If that wasn't you, you can safely ignore this email.</p>
+</body>
+</html>

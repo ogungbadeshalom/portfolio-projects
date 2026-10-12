@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="{{ config.language }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ config.title }}{% endblock %}</title>
+    <meta name="description" content="{{ config.description }}">
+    <link rel="alternate" type="application/rss+xml" title="{{ config.title }} RSS" href="{{ root }}/feed.xml">
+    <link rel="alternate" type="application/atom+xml" title="{{ config.title }} Atom" href="{{ root }}/atom.xml">
+    {% block meta %}{% endblock %}
+    <link rel="stylesheet" href="{{ root }}/assets/style.css">
+</head>
+<body>
+<header class="site-header">
+    <nav class="nav">
+        <a class="brand" href="{{ root }}/">{{ config.title }}</a>
+        <span class="nav-links">
+            <a href="{{ root }}/">Home</a>
+            <a href="{{ root }}/feed.xml">RSS</a>
+            <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode" type="button">◐</button>
+        </span>
+    </nav>
+</header>
+<main class="container">
+{% block content %}{% endblock %}
+</main>
+<footer class="site-footer">
+    <p>&copy; {{ config.author }} &middot; <a href="{{ root }}/sitemap.xml">Sitemap</a></p>
+</footer>
+<script>
+(function() {
+    var key = "blog-theme";
+    var rootEl = document.documentElement;
+    var toggle = document.getElementById("theme-toggle");
+    function apply(theme) {
+        rootEl.setAttribute("data-theme", theme);
+        localStorage && localStorage.setItem(key, theme);
+    }
+    var stored = null;
+    try { stored = localStorage.getItem(key); } catch (e) {}
+    if (!stored) {
+        stored = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    apply(stored);
+    if (toggle) {
+        toggle.addEventListener("click", function() {
+            var next = rootEl.getAttribute("data-theme") === "dark" ? "light" : "dark";
+            apply(next);
+        });
+    }
+})();
+</script>
+</body>
+</html>

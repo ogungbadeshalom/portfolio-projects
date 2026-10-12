@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rooms — Real-Time Chat</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="rooms-layout">
+    <div class="bar">
+      <h1>Rooms</h1>
+      <span style="color:var(--muted);font-size:13px;" id="who"></span>
+      <button id="logout" class="btn-danger">Log out</button>
+    </div>
+    <div id="error" class="error"></div>
+    <form class="room-form" id="create-form">
+      <input id="room-name" placeholder="New room name…" maxlength="128" required />
+      <button type="submit">Create</button>
+    </form>
+    <div class="room-list" id="room-list"></div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      var token = localStorage.getItem("chat_token");
+      var username = localStorage.getItem("chat_username");
+      var listEl = document.getElementById("room-list");
+      var errorEl = document.getElementById("error");
+      var whoEl = document.getElementById("who");
+
+      function showError(msg) {
+        errorEl.textContent = msg;
+        errorEl.classList.add("show");
+      }
+
+      if (!token) {
+        window.location.href = "/";
+        return;
+      }
+      whoEl.textContent = "Signed in as " + (username || "?");
+
+      function loadRooms() {
+        fetch("/api/rooms", { headers: { Authorization: "Bearer " + token } })
+          .then(function (r) {
+            if (r.status === 401) {
+              localStorage.clear();
+              window.location.href = "/";
+              return null;
+            }
+            return r.json();
+          })
+          .then(function (rooms) {
+            if (!rooms) return;
+            listEl.innerHTML = "";
+            if (rooms.length === 0) {
+              var empty = document.createElement("div");
+              empty.className = "empty";
+              empty.textContent = "No rooms yet — create the first one!";
+              listEl.appendChild(empty);
+              return;
+            }
+            rooms.forEach(function (room) {
+              var item = document.createElement("a");
+              item.className = "room-item";
+              item.href = "/rooms/" + room.id;
+              var name = document.createElement("div");
+              name.className = "name";
+              name.textContent = room.name;
+              var meta = document.createElement("div");
+              meta.className = "meta";
+              meta.textContent = "by " + (room.creator || "unknown") +
+                " · " + (room.created_at ? new Date(room.created_at).toLocaleString() : "");
+              item.appendChild(name);
+              item.appendChild(meta);
+              listEl.appendChild(item);
+            });
+          })
+          .catch(function () {
+            showError("Failed to load rooms.");
+          });
+      }
+
+      document.getElementById("create-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var name = document.getElementById("room-name").value.trim();
+        if (!name) return;
+        fetch("/api/rooms", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+          },
+          body: JSON.stringify({ name: name })
+        })
+          .then(function (r) {
+            if (r.status === 409) {
+              document.getElementById("room-name").value = "";
+              loadRooms();
+              return null;
+            }
+            return r.json();
+          })
+          .then(function (room) {
+            if (room) window.location.href = "/rooms/" + room.id;
+          })
+          .catch(function () {
+            showError("Failed to create room.");
+          });
+      });
+
+      document.getElementById("logout").addEventListener("click", function () {
+        localStorage.clear();
+        window.location.href = "/";
+      });
+
+      loadRooms();
+    })();
+  </script>
+</body>
+</html>

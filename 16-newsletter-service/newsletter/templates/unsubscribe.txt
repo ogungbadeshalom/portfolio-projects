@@ -1,0 +1,11 @@
+Hi {{ name }},
+
+You have been unsubscribed from {{ company }}. We've removed your email
+address from our list, and you won't receive any future campaigns.
+
+If you change your mind later, you can re-subscribe at any time.
+
+This is a confirmation of your request to unsubscribe from {{ company }}.
+
+---
+{{ company }}

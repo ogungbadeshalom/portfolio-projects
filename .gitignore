@@ -1,0 +1,45 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.mypy_cache/
+.ruff_cache/
+*.cover
+.coverage
+htmlcov/
+
+# ---- pytest ----
+.pytest_cache/
+*.db
+*.sqlite
+*.sqlite3
+
+# ---- Node / JS ----
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.local
+
+# ---- Runtime artifacts (per-project data/output) ----
+# Database files created at runtime by test/run
+03-url-shortener/data/
+13-invoice-generator/data/
+15-video-transcoder/storage/output/
+15-video-transcoder/storage/input/
+
+# ---- OS ----
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# ---- Editor / IDE ----
+.vscode/
+.idea/
+*.swp

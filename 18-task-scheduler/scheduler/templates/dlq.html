@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Dead-Letter Queue — Scheduler{% endblock %}
+{% block content %}
+<h1>Dead-letter queue</h1>
+<table class="table">
+  <thead><tr><th>#</th><th>name</th><th>payload</th><th>attempts</th><th>last error</th><th>actions</th></tr></thead>
+  <tbody>
+    {% for d in dlq %}
+    <tr>
+      <td><a href="/tasks/{{ d.id }}">{{ d.id }}</a></td>
+      <td>{{ d.name }}</td>
+      <td class="mono">{{ d.payload_json }}</td>
+      <td>{{ d.attempts }}/{{ d.max_attempts }}</td>
+      <td class="mono muted">{{ d.last_error or '' }}</td>
+      <td>
+        <button class="mini" hx-post="/api/dlq/{{ d.id }}/retry" hx-target="closest tr" hx-swap="outerHTML">retry</button>
+        <button class="mini danger" hx-post="/api/dlq/{{ d.id }}/skip" hx-target="closest tr" hx-swap="outerHTML">skip</button>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="empty">DLQ is empty.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

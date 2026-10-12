@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title }} &middot; Northwind Invoice</title>
+    <style>
+        :root {
+            --brand: #0f3d5c; --fg: #1c232b; --muted: #5b6770;
+            --border: #e2e7ec; --card: #f7f9fb; --accent: #2d7dd2;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+               background: #fff; color: var(--fg); line-height: 1.55; }
+        header { background: var(--brand); color: #fff; padding: 0.9rem 1.25rem; }
+        header h1 { margin: 0; font-size: 1.25rem; }
+        header .sub { opacity: 0.85; font-size: 0.85rem; }
+        main { max-width: 900px; margin: 0 auto; padding: 1.5rem 1.25rem; }
+        .empty { color: var(--muted); font-style: italic; }
+        table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
+        th, td { text-align: left; padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--border); }
+        th { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .mono { font-family: "SFMono-Regular", Consolas, monospace; font-size: 0.88em; }
+        .amount { text-align: right; font-variant-numeric: tabular-nums; }
+        .badge { display: inline-block; padding: 0.12rem 0.55rem; border-radius: 11px;
+                 font-size: 0.75rem; border: 1px solid var(--border); }
+        .badge.completed { color: #1c6b3a; border-color: #b9e6c5; background: #e9f8ee; }
+        .nav-links { margin-bottom: 1rem; }
+        .nav-links a { margin-right: 1rem; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+                padding: 1rem 1.2rem; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Northwind Studio &middot; Invoices</h1>
+    <div class="sub">Stripe webhook &rarr; PDF &rarr; email</div>
+</header>
+<main>
+    <div class="nav-links">
+        <a href="/ui/invoices">All invoices</a>
+        <a href="/">Landing</a>
+        <a href="/invoices">JSON API</a>
+    </div>
+
+    {% if not invoices %}
+        <p class="empty">No invoices yet. Trigger a demo webhook via
+            <code>POST /dev/simulate-webhook</code>.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Invoice</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inv in invoices %}
+                <tr>
+                    <td class="mono">{{ inv.invoice_number }}</td>
+                    <td>{{ inv.customer_email }}</td>
+                    <td><span class="badge {{ inv.status }}">{{ inv.status }}</span></td>
+                    <td class="amount">{{ money(inv.amount_cents, inv.currency) }}</td>
+                    <td><a href="/invoices/{{ inv.id }}/download">PDF</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</main>
+</body>
+</html>

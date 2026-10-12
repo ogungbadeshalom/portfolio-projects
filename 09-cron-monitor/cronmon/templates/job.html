@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}{{ job.name }} — Cron Monitor{% endblock %}
+{% block content %}
+
+<p><a href="/">&larr; dashboard</a></p>
+
+<h1 data-test="job-title">{{ job.name }}</h1>
+<div class="meta">
+  <span>cron: <b class="mono">{{ job.cron or 'manual trigger only' }}</b></span>
+  <span>max duration: <b>{{ job.expected_duration }}s</b></span>
+  <span>alert after: <b>{{ job.alert_after_minutes }} min</b></span>
+  <span>enabled: <b>{{ 'yes' if job.enabled else 'no' }}</b></span>
+</div>
+
+<h2>Uptime (last 7 days)</h2>
+<canvas id="uptimeChart" height="100" data-test="uptime-chart"></canvas>
+
+<h2>Recent runs</h2>
+<table class="jobtable" data-test="runs">
+  <thead><tr><th>Run</th><th>Start</th><th>End</th><th>Duration</th><th>Status</th></tr></thead>
+  <tbody>
+    {% for r in runs %}
+    <tr>
+      <td>#{{ r.id }}</td>
+      <td>{{ r.started_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+      <td>{{ r.ended_at.strftime('%Y-%m-%d %H:%M:%S') if r.ended_at else '—' }}</td>
+      <td>{{ '%ds'|format(r.duration_seconds) if r.duration_seconds else '—' }}</td>
+      <td><span class="badge {{ r.status }}">{{ r.status }}</span></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="empty">No runs in the last 7 days.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Alerts</h2>
+<ul class="alertlist">
+  {% for a in alerts %}
+  <li class="alert {{ a.type }}"><span class="badge">{{ a.type }}</span> {{ a.message }}</li>
+  {% else %}
+  <li class="empty">No alerts.</li>
+  {% endfor %}
+</ul>
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  var data = {{ chart | tojson }};
+  var ctx = document.getElementById('uptimeChart');
+  if (ctx && window.Chart) {
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data.labels,
+        datasets: [{ label: 'uptime %', data: data.values, borderColor: '#2d7d46', fill: true }]
+      },
+      options: { scales: { y: { min: 0, max: 100 } }, plugins: { legend: { display: false } } }
+    });
+  }
+});
+</script>
+
+{% endblock %}

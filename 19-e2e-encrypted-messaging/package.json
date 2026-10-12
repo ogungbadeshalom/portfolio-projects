@@ -1,0 +1,24 @@
+{
+  "name": "echat",
+  "version": "1.0.0",
+  "private": true,
+  "description": "End-to-end encrypted messaging (TypeScript + WebSockets): X3DH + Double Ratchet via libsodium, untrusted ciphertext-only relay server.",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "start:server": "node dist/server/main.js",
+    "test": "npm run build && node --test \"dist/tests/**/*.test.js\"",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "dependencies": {
+    "@types/libsodium-wrappers": "^0.7.14",
+    "@types/node": "^26.6.5",
+    "@types/ws": "^8.18.2",
+    "libsodium-wrappers": "^0.8.4",
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

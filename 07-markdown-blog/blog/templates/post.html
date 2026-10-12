@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} &middot; {{ config.title }}{% endblock %}
+{% block meta %}
+    {% if og_image %}<meta property="og:image" content="{{ og_image }}">{% endif %}
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="{{ config.title }}">
+    <meta property="og:title" content="{{ post.title }}">
+    <meta property="og:description" content="{{ post.description or post.body_html[:160] }}">
+{% endblock %}
+{% block content %}
+<article class="post">
+    <h1 class="post-title">{{ post.title }}</h1>
+    <p class="post-meta">
+        {% if post.date %}<time datetime="{{ post.iso_date }}">{{ post.date.strftime("%b %d, %Y") }}</time>{% endif %}
+        {% if post.author %}&middot; {{ post.author }}{% endif %}
+    </p>
+    {% if post.tags %}
+    <p class="tags">
+        {% for tag in post.tags %}<a class="tag" href="{{ root }}/tags/{{ tag }}/">#{{ tag }}</a>{% endfor %}
+    </p>
+    {% endif %}
+    <div class="post-body">
+        {{ post.body_html|safe }}
+    </div>
+    <nav class="post-nav">
+        <a href="{{ root }}/">&larr; Back to index</a>
+    </nav>
+</article>
+{% endblock %}

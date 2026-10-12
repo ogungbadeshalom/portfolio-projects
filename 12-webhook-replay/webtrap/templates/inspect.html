@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Request #{{ record.id }}{% endblock %}
+{% block content %}
+<p><a href="/">&larr; back to list</a></p>
+<h1><span class="method">{{ record.method }}</span> {{ record.path }}</h1>
+<p class="muted mono">token: {{ record.token }} &middot; source: {{ record.source_ip or "&ndash;" }} &middot; id: {{ record.id }}</p>
+
+<h2>Headers</h2>
+<div class="kv">
+{% for name, values in record.headers_dict().items() %}
+  <div class="kv-row"><code class="mono">{{ name }}:</code>
+    {% for v in values %}<code class="mono val">{{ v }}</code>{% endfor %}
+  </div>
+{% endfor %}
+</div>
+
+<h2>Query params</h2>
+{% if record.query_dict() %}
+<div class="kv">
+{% for name, values in record.query_dict().items() %}
+  <div class="kv-row"><code class="mono">{{ name }}:</code>{% for v in values %}<code class="mono val">{{ v }}</code>{% endfor %}</div>
+{% endfor %}
+</div>
+{% else %}<p class="empty">(none)</p>{% endif %}
+
+<h2>Body</h2>
+{% if record.body %}
+<pre class="body">{{ record.body.decode('utf-8', errors='replace') }}</pre>
+{% else %}<p class="empty">(empty)</p>{% endif %}
+
+<h2>Replay</h2>
+<form id="replay-form">
+  <label>Target URL <input type="url" name="target" required placeholder="https://prod.example.com/webhook"></label>
+  <label>Delay (ms) <input type="number" name="delay_ms" value="0" min="0"></label>
+  <button class="btn" type="submit">Replay →</button>
+</form>
+<div id="replay-result" class="result"></div>
+
+<h2>cURL</h2>
+<pre class="body curl">{{ curl }}</pre>
+
+<script>
+const form = document.getElementById('replay-form');
+const out = document.getElementById('replay-result');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const body = {target: form.target.value, delay_ms: Number(form.delay_ms.value || 0)};
+  out.innerHTML = 'replaying…';
+  const res = await fetch('/api/requests/{{ record.id }}/replay', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
+  const data = await res.json();
+  out.innerHTML = '<h3>Response <code>' + data.status_code + '</code></h3>' +
+    '<pre class="body">' + (data.body_raw != null ? atob(data.body_raw) : '(empty)') + '</pre>';
+});
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+/* md2html light theme
+   Mirrors the variables in md2html/themes.py so it can be hand-tuned and
+   re-embedded later. */
+:root {
+  --bg: #ffffff;
+  --fg: #24292f;
+  --muted: #57606a;
+  --accent: #0969da;
+  --border: #d0d7de;
+  --code-bg: #f6f8fa;
+  --blockquote-border: #d0d7de;
+  --table-stripe: #f6f8fa;
+  --header-bg: #f6f8fa;
+}

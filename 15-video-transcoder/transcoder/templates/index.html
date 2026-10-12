@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Video Transcoder</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>Video Transcoder Queue</h1>
+    <nav><a href="/">Transcode</a> · <a href="/jobs">Jobs</a></nav>
+  </header>
+  <main>
+    <section id="drop" class="dropzone">
+      <p>Drag a video here, or click to browse.</p>
+      <form id="upload-form" hidden>
+        <input type="file" id="file" name="file" accept="video/*">
+        <label for="resolutions">Resolutions</label>
+        <input type="text" id="resolutions" name="resolutions" value="480,720,1080" placeholder="480,720,1080">
+        <button type="submit">Transcode</button>
+      </form>
+      <p id="result"></p>
+    </section>
+  </main>
+  <script src="/static/submit.js"></script>
+</body>
+</html>

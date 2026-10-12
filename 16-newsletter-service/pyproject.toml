@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "newsletter-service"
+version = "0.1.0"
+description = "Portfolio-ready email newsletter service: subscribe, manage list, compose campaigns, bulk send, track opens/clicks/unsubscribes."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Portfolio Author" }]
+keywords = ["newsletter", "email", "fastapi", "smtp", "tracking", "can-spam"]
+
+[project.scripts]
+newsletter = "newsletter.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "httpx>=0.24"]
+
+[tool.setuptools]
+packages = ["newsletter"]
+
+[tool.setuptools.package-data]
+newsletter = ["templates/**/*.html"]

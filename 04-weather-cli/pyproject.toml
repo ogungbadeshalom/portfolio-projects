@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "weather-cli"
+version = "0.1.0"
+description = "Command-line weather lookup using the free Open-Meteo API (no API key required)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Portfolio Author" }]
+dependencies = [
+    "httpx>=0.24",
+    "click>=8.0",
+    "rich>=12.0",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
+
+[project.scripts]
+weather = "weather.cli:main"
+
+[tool.setuptools]
+packages = ["weather"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

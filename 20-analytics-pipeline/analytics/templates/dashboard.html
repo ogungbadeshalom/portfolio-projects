@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Analytics{% endblock %}
+{% block head %}
+<script src="/static/chart.umd.min.js"></script>
+{% endblock %}
+{% block content %}
+<h1>Live Analytics Dashboard</h1>
+
+<section class="counters" id="counters">
+  <div class="card"><div class="label">Events · last 5m</div><div class="value" id="c-5m">–</div></div>
+  <div class="card"><div class="label">Events · last 1h</div><div class="value" id="c-1h">–</div></div>
+  <div class="card"><div class="label">Events · last 24h</div><div class="value" id="c-24h">–</div></div>
+  <div class="card"><div class="label">Total</div><div class="value" id="c-total">–</div></div>
+</section>
+
+<section class="panel">
+  <h2>Top Pages <small class="muted">last 24h</small></h2>
+  <table id="top-pages">
+    <thead><tr><th>Page</th><th>Views</th><th>Unique users</th></tr></thead>
+    <tbody><tr><td colspan="3" class="muted">loading…</td></tr></tbody>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Retention Heatmap <small class="muted">day-0 cohorts</small></h2>
+  <div id="retention"><canvas id="retention-chart" height="220"></canvas></div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="/static/dashboard.js"></script>
+{% endblock %}
